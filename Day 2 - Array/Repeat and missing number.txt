@@ -1,0 +1,14 @@
+#include <bits/stdc++.h>
+
+pair<int,int> missingAndRepeating(vector<int> &arr, int n)
+{
+	sort(arr.begin(), arr.end());
+	int repeated, notpresent;
+	int sum=arr[0], reqSum=(n*(n+1))/2;
+	for(int i=1; i<n; i++) {
+		if(arr[i]==arr[i-1]) repeated=arr[i];
+		sum+=arr[i];
+	}
+	notpresent=reqSum-sum+repeated;
+	return {notpresent, repeated};
+}
