@@ -1,0 +1,16 @@
+class Solution {
+public:
+    vector<int> majorityElement(vector<int>& nums) {
+        unordered_map<int, pair<int, bool>> umap;
+        vector<int> ans;
+        int n=nums.size();
+        for(auto val: nums) {
+            umap[val].first++;
+            if(umap[val].first>(n/3) && !umap[val].second) {
+                ans.push_back(val);
+                umap[val].second=true;
+            }
+        }
+        return ans;
+    }
+};

@@ -1,0 +1,17 @@
+class Solution {
+public:
+    vector<vector<int>> dp;
+    int mod=2000000000;
+    int dfs(int i, int j, int m, int n) {
+        if(i>=m || j>=n) return 0;
+        if(i==m-1 && j==n-1) return 1;
+        if(dp[i][j]!=-1) return dp[i][j];
+        int down=dfs(i+1, j, m, n)%mod;
+        int right=dfs(i, j+1, m, n)%mod;
+        return dp[i][j]=(down+right)%mod;
+    }
+    int uniquePaths(int m, int n) {
+        dp.resize(m, vector<int>(n, -1));
+        return dfs(0, 0, m, n);
+    }
+};
