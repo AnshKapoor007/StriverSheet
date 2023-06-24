@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        int currStart=0, currEnd=0, maxLen=0, n=s.length();
+        unordered_map<char, int> umap;
+        while(currEnd<n) {
+            if(umap.find(s[currEnd])!=umap.end())
+                currStart=max(currStart,umap[s[currEnd]]+1);
+            umap[s[currEnd]]=currEnd;
+            maxLen=max(maxLen, currEnd-currStart+1);
+            currEnd++;
+        }
+        return maxLen;
+    }
+};
