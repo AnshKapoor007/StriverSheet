@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        int n=height.size();
+        int amountofwater=0;
+        vector<int> leftMax(n, 0);
+        vector<int> rightMax(n, 0);
+        for(int i=0; i<n; i++) {
+            if(i==0) leftMax[i]=height[i];
+            else leftMax[i]=max(leftMax[i-1], height[i]);
+        }
+        for(int i=n-1; i>=0; i--) {
+            if(i==n-1) rightMax[i]=height[i];
+            else rightMax[i]=max(rightMax[i+1], height[i]);
+        }
+        for(int i=0; i<n; i++) {
+            amountofwater+=min(leftMax[i], rightMax[i])-height[i];
+        }
+        return amountofwater;
+    }
+};
