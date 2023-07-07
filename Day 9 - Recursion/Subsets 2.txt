@@ -1,0 +1,19 @@
+class Solution {
+public:
+    void subsetsWithDupHelp(int idx, int n, vector<int>& nums, vector<int>& subarray, vector<vector<int>>& ans) {
+        ans.push_back(subarray);
+        for(int i=idx; i<n; i++) {
+            if(i!=idx && nums[i]==nums[i-1]) continue;
+            subarray.push_back(nums[i]);
+            subsetsWithDupHelp(i+1, nums.size(), nums, subarray, ans);
+            subarray.pop_back();
+        }
+    }
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        vector<vector<int>> ans;
+        vector<int> subarray;
+        sort(nums.begin(), nums.end());
+        subsetsWithDupHelp(0, nums.size(), nums, subarray, ans);
+        return ans;
+    }
+};

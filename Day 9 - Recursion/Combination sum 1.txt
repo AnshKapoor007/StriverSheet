@@ -1,0 +1,22 @@
+class Solution {
+public:
+    vector<vector<int>> ans;
+    void combinationSumHelp(int idx, vector<int>& candidates, int target, int n, vector<int>& subArr) {
+        if (idx == n) {
+            if (target == 0) ans.push_back(subArr);
+            return;
+        }
+        if (candidates[idx] <= target) {
+            subArr.push_back(candidates[idx]);
+            combinationSumHelp(idx, candidates, target - candidates[idx], n, subArr);
+            subArr.pop_back();
+        }
+        combinationSumHelp(idx + 1, candidates, target, n, subArr);
+    }
+    
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        vector<int> subArr;
+        combinationSumHelp(0, candidates, target, candidates.size(), subArr);
+        return ans;
+    }
+};

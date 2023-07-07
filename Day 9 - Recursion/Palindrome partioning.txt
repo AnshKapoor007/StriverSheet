@@ -1,0 +1,25 @@
+class Solution {
+public:
+    vector<vector<string>> result;
+    bool isPalindrome(int low, int high, string s) {
+        while(low<high) {
+            if(s[low++]!=s[high--]) return false;
+        }
+        return true;
+    }
+    void partitionhelp(string s, int start, vector<string>& currPalindrome) {
+        if(start>=s.length()) result.push_back(currPalindrome);
+        for(int end=start; end<s.length(); end++) {
+            if(isPalindrome(start, end, s)) {
+                currPalindrome.push_back(s.substr(start, end-start+1));
+                partitionhelp(s, end+1, currPalindrome);
+                currPalindrome.pop_back();
+            }
+        }
+    }
+    vector<vector<string>> partition(string s) {
+        vector<string> currPalindrome;
+        partitionhelp(s, 0, currPalindrome);
+        return result;
+    }
+};
