@@ -1,0 +1,26 @@
+bool isValid(int row, int col, int n) {
+    if(row<0 || col<0 || row>=n || col>=n) return false;
+    return true;
+}
+void ratMazeHelp(vector<vector<int>>& mat, vector<string>& ans, string curr, int row, int col, int n) {
+    if(row==n-1 && col==n-1) {
+        ans.push_back(curr);
+        return;
+    }
+    if(mat[row][col]!=1) return;
+    mat[row][col]=-1;
+    if(isValid(row+1, col, n))
+        ratMazeHelp(mat, ans, curr+'D', row+1, col, n);
+    if(isValid(row-1, col, n))
+        ratMazeHelp(mat, ans, curr+'U', row-1, col, n);
+    if(isValid(row, col+1, n))
+        ratMazeHelp(mat, ans, curr+'R', row, col+1, n);
+    if(isValid(row, col-1, n))
+        ratMazeHelp(mat, ans, curr+'L', row, col-1, n);
+    mat[row][col]=1;
+}
+vector<string> ratMaze(vector<vector<int>>& mat) {
+    vector<string> ans;
+    if(mat[mat.size()-1][mat.size()-1]==1) ratMazeHelp(mat, ans, "", 0, 0, mat.size());
+    return ans;
+}

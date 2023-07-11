@@ -1,0 +1,48 @@
+class Solution {
+public:
+    vector<vector<string>> ans;
+    bool isValid(vector<string>& board, int row, int col, int n) {
+        int tempRow=row;
+        int tempCol=col;
+        while(tempRow>=0 && tempCol>=0) {
+            if(board[tempRow][tempCol]=='Q') return false;
+            tempRow--;
+            tempCol--;
+        }
+        tempRow=row;
+        tempCol=col;
+        while(tempRow<n && tempCol>=0) {
+            if(board[tempRow][tempCol]=='Q') return false;
+            tempRow++;
+            tempCol--;
+        }
+        tempRow=row;
+        tempCol=col;
+        while(tempCol>=0) {
+            if(board[tempRow][tempCol]=='Q') return false;
+            tempCol--;
+        }
+        return true;
+    }
+    void place(vector<string>& board, int col, int n) {
+        if(col==n) {
+            ans.push_back(board);
+            return;
+        }
+        for(int i=0; i<n; i++) {
+            if(isValid(board, i, col, n)) {
+                board[i][col]='Q';
+                place(board, col+1, n);
+                board[i][col]='.';
+            }
+        }
+    }
+    vector<vector<string>> solveNQueens(int n) {
+        vector<string> board(n);
+        for(int i=0; i<n; i++) {
+            for(int j=0; j<n; j++) board[i]+='.';
+        }
+        place(board, 0, n);
+        return ans;
+    }
+};

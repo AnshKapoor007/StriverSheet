@@ -1,0 +1,26 @@
+#include <bits/stdc++.h> 
+
+void wordBreakHelp(int idx, int n, string& s, string curr, unordered_map<string, bool>& dict, vector<string>& ans)
+{
+    if(idx==n) {
+        ans.push_back(curr);
+        return;
+    }
+    string temp="";
+    for(int i=idx; i<n; i++) {
+        temp+=s[i];
+        if(dict[temp]) {
+            if(curr=="") wordBreakHelp(i+1, n, s, temp, dict, ans);
+            else wordBreakHelp(i+1, n, s, curr+" "+temp, dict, ans);
+        }
+    }
+}
+
+vector<string> wordBreak(string& s, vector<string>& dictionary)
+{
+    unordered_map<string, bool> dict;
+    vector<string> ans;
+    for(auto word: dictionary) dict[word]=true;
+    wordBreakHelp(0, s.length(), s, "", dict, ans);
+    return ans;
+}
