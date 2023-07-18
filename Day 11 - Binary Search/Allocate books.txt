@@ -1,0 +1,27 @@
+#include <bits/stdc++.h> 
+bool isValid(vector<int>& time, int n, int m, long long barrier) {
+	int std=1;
+	long long limit=0;
+	for(int i=0; i<m; i++) {
+		if(time[i]>barrier) return false;
+		if(limit+time[i]>barrier) {
+			std++;
+			limit=time[i];
+		}
+		else limit+=time[i];
+	}
+	return std<=n;
+}
+long long ayushGivesNinjatest(int n, int m, vector<int> time) 
+{	
+	int len=time.size();
+	long long sum=0;
+	for(int i=0; i<len; i++) sum+=time[i];
+	long long low=0, high=sum;
+	while(low<=high) {
+		long long mid=(low+high)/2;
+		if(isValid(time, n, m, mid)) high=mid-1;
+		else low=mid+1;
+	}
+	return low;
+}
