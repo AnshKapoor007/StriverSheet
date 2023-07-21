@@ -1,0 +1,57 @@
+#include <bits/stdc++.h>
+int left(int k) {
+    return 2*k+1;
+}
+int right(int k) {
+    return 2*k+2;
+}
+int parent(int k) {
+    return (k-1)/2;
+}
+void heapify(vector<int>& heap, int k) {
+    int l=left(k);
+    int r=right(k);
+    int smallest=k;
+    if(l<heap.size() && heap[l]<heap[smallest])
+        smallest=l;
+    if(r<heap.size() && heap[r]<heap[smallest])
+        smallest=r;
+    if(smallest!=k) {
+        int temp=heap[k];
+        heap[k]=heap[smallest];
+        heap[smallest]=temp;
+        heapify(heap, smallest);
+    }
+}
+void insert(vector<int>& heap, int val) {
+    heap.push_back(val);
+    int i=heap.size()-1;
+    while(i!=0 && heap[parent(i)]>heap[i]) {
+        int par=parent(i);
+        int temp=heap[par];
+        heap[par]=heap[i];
+        heap[i]=temp;
+        i=par;
+    }
+}
+int del(vector<int>& heap) {
+    if(heap.empty()) return -1;
+    int val=heap[0];
+    int temp=heap[heap.size()-1];
+    heap[heap.size()-1]=heap[0];
+    heap[0]=temp;
+    heap.pop_back();
+    heapify(heap, 0);
+    return val;
+}
+vector<int> minHeap(int n, vector<vector<int>>& q) {
+    vector<int> ans;
+    vector<int> heap;
+    for(auto query: q) {
+        if(query[0]==1 && !heap.empty())
+            ans.push_back(del(heap));
+        else if(query[0]==0)
+            insert(heap, query[1]);
+    }
+    return ans;
+}
