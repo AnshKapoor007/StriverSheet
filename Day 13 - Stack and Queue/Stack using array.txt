@@ -1,0 +1,41 @@
+// Stack class.
+class Stack {
+    vector<int> st;
+    int tp=-1;
+    int cap;
+public:
+    
+    Stack(int capacity) {
+        cap=capacity;
+        st.resize(capacity);
+    }
+
+    void push(int num) {
+        if(!isFull())
+            st[++tp]=num;
+    }
+
+    int pop() {
+        if(!isEmpty()) {
+            int val=st[tp];
+            tp--;
+            return val;
+        }
+        return -1;
+    }
+    
+    int top() {
+        if(!isEmpty())
+            return st[tp];
+        return -1;
+    }
+    
+    int isEmpty() {
+        return tp==-1;
+    }
+    
+    int isFull() {
+        return tp==cap-1;
+    }
+    
+};
