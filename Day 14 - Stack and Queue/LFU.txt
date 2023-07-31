@@ -1,0 +1,102 @@
+struct Node {
+  int key;
+  int value;
+  int cnt;
+  Node* next;
+  Node* prev;
+  Node(int k, int val) {
+      key=k;
+      value=val;
+      cnt=1;
+  }
+};
+
+struct List {
+  int size;
+  Node* head;
+  Node* tail;
+  List() {
+      head=new Node(-1, -1);
+      tail=new Node(-1, -1);
+      head->next=tail;
+      tail->prev=head;
+      size=0;
+  }
+  void addNode(Node* newNode) {
+      Node* temp=head->next;
+      newNode->next=temp;
+      newNode->prev=head;
+      head->next=newNode;
+      temp->prev=newNode;
+      size++;
+  }
+  void removeNode(Node* node) {
+      Node* delPrev=node->prev;
+      Node* delNext=node->next;
+      delPrev->next=delNext;
+      delNext->prev=delPrev;
+      size--;
+  }
+};
+
+class LFUCache {
+    map<int, Node*> keyNode;
+    map<int, List*> freqList;
+    int maxCacheSize;
+    int minFreq;
+    int currSize;
+public:
+    LFUCache(int capacity) {
+        maxCacheSize=capacity;
+        minFreq=0;
+        currSize=0;
+    }
+    void updateFreqList(Node* node) {
+        keyNode.erase(node->key);
+        freqList[node->cnt]->removeNode(node);
+        if(node->cnt==minFreq && freqList[node->cnt]->size==0)
+            minFreq++;
+        List* nextHigherFreqList=new List();
+        if(freqList.find(node->cnt+1)!=freqList.end())
+            nextHigherFreqList=freqList[node->cnt+1];
+        node->cnt+=1;
+        nextHigherFreqList->addNode(node);
+        freqList[node->cnt]=nextHigherFreqList;
+        keyNode[node->key]=node;
+    }
+    int get(int key) {
+        if(keyNode.find(key)!=keyNode.end()) {
+            Node* node=keyNode[key];
+            int val=node->value;
+            updateFreqList(node);
+            return val;
+        }
+        return -1;
+    }
+    void put(int key, int value) {
+        if(maxCacheSize==0)
+            return;
+        if(keyNode.find(key)!=keyNode.end()) {
+            Node* node=keyNode[key];
+            node->value=value;
+            updateFreqList(node);
+        }
+        else {
+            if(currSize==maxCacheSize) {
+                List* lt=freqList[minFreq];
+                keyNode.erase(lt->tail->prev->key);
+                freqList[minFreq]->removeNode(lt->tail->prev);
+                currSize--;
+            }
+            currSize++;
+            minFreq=1;
+            List* listFreq=new List();
+            if(freqList.find(minFreq)!=freqList.end())
+                listFreq=freqList[minFreq];
+            Node* node=new Node(key, value);
+            listFreq->addNode(node);
+            keyNode[key]=node;
+            freqList[minFreq]=listFreq;
+        }
+    }
+};
