@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int romanToInt(string s) {
+        int ans=0;
+        int n=s.size();
+        map<char, int> m;
+        m={{'I', 1}, {'V', 5}, {'X', 10}, {'L', 50}, {'C', 100}, {'D', 500}, {'M', 1000}};
+        for(int i=n-1; i>=0; i--) {
+            if(i!=n-1 && s[i]=='I') {
+                if(s[i+1]=='V' || s[i+1]=='X') ans-=m[s[i]];
+                else ans+=m[s[i]];
+            }
+            else if(i!=n-1 && s[i]=='X') {
+                if(s[i+1]=='L' || s[i+1]=='C') ans-=m[s[i]];
+                else ans+=m[s[i]];
+            }
+            else if(i!=n-1 && s[i]=='C') {
+                if(s[i+1]=='D' || s[i+1]=='M') ans-=m[s[i]];
+                else ans+=m[s[i]];
+            }
+            else ans+=m[s[i]];
+            cout<<ans<<'\t';
+        }
+        return ans;
+    }
+};

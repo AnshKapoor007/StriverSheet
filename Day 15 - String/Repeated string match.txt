@@ -1,0 +1,20 @@
+class Solution {
+public:
+    bool isSubstring(string s1, string s2) {
+        if(s2.find(s1)!=string::npos)
+            return true;
+        return false;
+    }
+    int repeatedStringMatch(string a, string b) {
+        int cnt=1;
+        string ra=a;
+        while(ra.size()<b.size()) {
+            cnt++;
+            ra+=a;
+        }
+        if(isSubstring(b, ra)) return cnt;
+        ra+=a;
+        if(isSubstring(b, ra)) return cnt+1;
+        return -1;
+    }
+};
