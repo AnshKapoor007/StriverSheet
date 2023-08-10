@@ -1,0 +1,32 @@
+class Solution {
+public:
+    vector<pair<int, int>> countfreq(string n) {
+        int len=n.size();
+        vector<pair<int, int>> ans;
+        ans.push_back({n[0]-'0', 1});
+        for(int i=1; i<len; i++) {
+            while(i<len && n[i]==n[i-1]) {
+                ans[ans.size()-1].second++;
+                i++;
+            }
+            if(i<len)
+                ans.push_back({n[i]-'0', 1});
+        }
+        return ans;
+    }
+    string returnString(vector<pair<int, int>> nums) {
+        string ans="";
+        for(auto val: nums) {
+            ans+=(val.second+'0');
+            ans+=(val.first+'0');
+        }
+        return ans;
+    }
+    string countAndSay(int n) {
+        string strn="1";
+        for(int i=1; i<n; i++)
+            strn=returnString(countfreq(strn));
+        countfreq(strn);
+        return strn;
+    }
+};

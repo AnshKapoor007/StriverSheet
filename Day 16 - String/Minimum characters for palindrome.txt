@@ -1,0 +1,14 @@
+int minCharsforPalindrome(string str) {
+	int i=0, j=str.size()-1, trim=j, count=0;
+	while(i<j) {
+		if(str[i]==str[j])
+			i++, j--;
+		else {
+			i=0;
+			j=--trim;
+			count++;
+		}
+	}
+	return count;
+	
+}

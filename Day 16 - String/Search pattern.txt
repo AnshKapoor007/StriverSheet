@@ -1,0 +1,24 @@
+vector<int> stringMatch(string text, string pattern) {
+	int n1=text.size(), n2=pattern.size();
+	if(n1<n2) return {};
+	vector<int> ans;
+	int i=0, j=0;
+	while(i<n1) {
+		if(j==n2) {
+			i-=j;
+			ans.push_back(i+1);
+			j=0;
+		}
+		else if(text[i]!=pattern[j]) {
+			i-=j;
+			j=0;
+		}
+		else j++;
+		i++;
+	}
+	if(j==n2) {
+		i-=j;
+		ans.push_back(i+1);
+	}
+	return ans;
+}
