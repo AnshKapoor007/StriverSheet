@@ -1,0 +1,36 @@
+/********************************************************************
+
+    Following is the Binary Tree node structure:
+
+    class BinaryTreeNode {
+        public :
+        int data;
+        BinaryTreeNode<T> *left;
+        BinaryTreeNode<T> *right;
+
+        BinaryTreeNode(T data) {
+            this -> data = data;
+            left = NULL;
+            right = NULL;
+        }
+    };
+    
+********************************************************************/
+
+void allPaths(BinaryTreeNode<int>* root, vector<string>& ans, string curr) {
+    if(root->left==NULL && root->right==NULL) {
+        if(curr!="")
+            ans.push_back(curr);
+        return;
+    }
+    if(root->left!=NULL)
+        allPaths(root->left, ans, curr+" "+to_string(root->left->data));
+    if(root->right!=NULL)
+        allPaths(root->right, ans, curr+" "+to_string(root->right->data));
+}
+vector<string> allRootToLeaf(BinaryTreeNode<int>* root) {
+    vector<string> ans;
+    if(root==NULL) return ans;
+    allPaths(root, ans, to_string(root->data));
+    return ans;
+}

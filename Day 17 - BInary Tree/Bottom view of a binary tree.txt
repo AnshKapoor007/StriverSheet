@@ -1,0 +1,40 @@
+#include<map>
+/************************************************************
+
+    Following is the TreeNode class structure
+
+    template <typename T>
+    class TreeNode {
+       public:
+        T data;
+        TreeNode<T> *left;
+        TreeNode<T> *right;
+
+        TreeNode(T data) {
+            this->data = data;
+            left = NULL;
+            right = NULL;
+        }
+    };
+
+************************************************************/
+
+vector<int> bottomView(TreeNode<int> * root){
+    queue<pair<TreeNode<int>*, int>> q;
+    map<int, int> m;
+    vector<int> ans;
+    q.push({root, 0});
+    while(!q.empty()) {
+        TreeNode<int>* curr=q.front().first;
+        int currCol=q.front().second;
+        q.pop();
+        m[currCol]=curr->data;
+        if(curr->left!=NULL)
+            q.push({curr->left, currCol-1});
+        if(curr->right!=NULL)
+            q.push({curr->right, currCol+1});
+    }
+    for(auto val: m)
+        ans.push_back(val.second);
+    return ans;
+}

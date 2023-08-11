@@ -1,0 +1,41 @@
+#include <bits/stdc++.h> 
+/************************************************************
+
+    Following is the TreeNode class structure
+
+    template <typename T>
+    class TreeNode {
+       public:
+        T data;
+        TreeNode<T> *left;
+        TreeNode<T> *right;
+
+        TreeNode(T data) {
+            this->data = data;
+            left = NULL;
+            right = NULL;
+        }
+    };
+
+************************************************************/
+vector<int> getLeftView(TreeNode<int>* root) {
+    queue<pair<TreeNode<int>*, int>> q;
+    vector<int> ans;
+    unordered_map<int, bool> visitedlevels;
+    if(root==NULL) return {};
+    q.push({root, 0});
+    while(!q.empty()) {
+        TreeNode<int>* curr=q.front().first;
+        int currlevel=q.front().second;
+        q.pop();
+        if(!visitedlevels[currlevel]) {
+            ans.push_back(curr->data);
+            visitedlevels[currlevel]=true;
+        }
+        if(curr->left!=NULL)
+            q.push({curr->left, currlevel+1});
+        if(curr->right!=NULL)
+            q.push({curr->right, currlevel+1});
+    }
+    return ans;
+}

@@ -1,0 +1,27 @@
+/*
+    Following is Binary Tree Node structure:
+    class TreeNode
+    {
+    public:
+        int data;
+        TreeNode *left, *right;
+        TreeNode() : data(0), left(NULL), right(NULL) {}
+        TreeNode(int x) : data(x), left(NULL), right(NULL) {}
+        TreeNode(int x, TreeNode *left, TreeNode *right) : data(x), left(left), right(right) {}
+    };
+*/
+void traversal(TreeNode* root, vector<int>& inorder, vector<int>& preorder, vector<int>& postorder) {
+    if(root==NULL) return;
+    preorder.push_back(root->data);
+    traversal(root->left, inorder, preorder, postorder);
+    inorder.push_back(root->data);
+    traversal(root->right, inorder, preorder, postorder);
+    postorder.push_back(root->data);
+}
+vector<vector<int>> getTreeTraversal(TreeNode *root){
+    vector<int> inordere;
+    vector<int> preordere;
+    vector<int> postordere;
+    traversal(root, inordere, preordere, postordere);
+    return {inordere, preordere, postordere};
+}

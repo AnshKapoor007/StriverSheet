@@ -1,0 +1,48 @@
+#include<unordered_map>
+/************************************************************
+
+    Following is the TreeNode class structure:
+
+    template <typename T>
+    class TreeNode
+    {
+    public:
+        T data;
+        TreeNode<T> *left;
+        TreeNode<T> *right;
+
+        TreeNode(T dat)
+        {
+            this->data = dat;
+            left = NULL;
+            right = NULL;
+        }
+    };
+
+************************************************************/
+
+vector<int> getTopView(TreeNode<int>* root) {
+    queue<pair<TreeNode<int>*, int>> q;
+    if(root==NULL) return {};
+    vector<pair<int, int>> vals;
+    vector<int> ans;
+    unordered_map<int, bool> isVisited;
+    q.push({root, 0});
+    while(!q.empty()) {
+        TreeNode<int>* curr=q.front().first;
+        int currDistance=q.front().second;
+        q.pop();
+        if(!isVisited[currDistance]) {
+            vals.push_back({currDistance, curr->data});
+            isVisited[currDistance]=true;
+        }
+        if(curr->left!=NULL)
+            q.push({curr->left, currDistance-1});
+        if(curr->right!=NULL)
+            q.push({curr->right, currDistance+1});
+    }
+    sort(vals.begin(), vals.end());
+    for(auto val: vals)
+        ans.push_back(val.second);
+    return ans;
+}
