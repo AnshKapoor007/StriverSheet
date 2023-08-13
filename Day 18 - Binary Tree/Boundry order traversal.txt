@@ -1,0 +1,71 @@
+#include<stack>
+/************************************************************
+
+    Following is the Binary Tree node structure:
+
+    template <typename T>
+    class TreeNode
+    {
+    public:
+        T data;
+        TreeNode<T> *left;
+        TreeNode<T> *right;
+
+        TreeNode(T data)
+        {
+            this -> data = data;
+            left = NULL;
+            right = NULL;
+        }
+
+        ~TreeNode()
+        {
+            if(left)
+                delete left;
+            if(right)
+                delete right;
+        }
+    };
+
+************************************************************/
+bool isLeaf(TreeNode<int>* root) {
+    return root->right==NULL && root->left==NULL;
+}
+void leftBoundry(TreeNode<int>* root, vector<int>& ans) {
+    TreeNode<int>* curr=root->left;
+    while(curr!=NULL) {
+        if(!isLeaf(curr)) ans.push_back(curr->data);
+        if(curr->left!=NULL) curr=curr->left;
+        else curr=curr->right;
+    }
+}
+void rightBoundry(TreeNode<int>* root, vector<int>& ans) {
+    TreeNode<int>* curr=root->right;
+    stack<int> st;
+    while(curr!=NULL) {
+        if(!isLeaf(curr)) st.push(curr->data);
+        if(curr->right!=NULL) curr=curr->right;
+        else curr=curr->left;
+    }
+    while(!st.empty()) {
+        ans.push_back(st.top());
+        st.pop();
+    }
+}
+void inorder(TreeNode<int>* root, vector<int>& ans) {
+    if(isLeaf(root)) {
+        ans.push_back(root->data);
+        return;
+    }
+    if(root->left!=NULL) inorder(root->left, ans);
+    if(root->right!=NULL) inorder(root->right, ans);
+}
+vector<int> traverseBoundary(TreeNode<int>* root) {
+    vector<int> ans;
+    if(root==NULL) return ans;
+    if(!isLeaf(root)) ans.push_back(root->data);
+    leftBoundry(root, ans);
+    inorder(root, ans);
+    rightBoundry(root, ans);
+    return ans;
+}
