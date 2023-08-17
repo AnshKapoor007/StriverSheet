@@ -1,0 +1,38 @@
+/*************************************************************
+
+    Following is the Binary Tree node structure
+    class TreeNode
+    {
+    public:
+        int data;
+        TreeNode *left, *right;
+        TreeNode() : data(0), left(NULL), right(NULL) {}
+        TreeNode(int x) : data(x), left(NULL), right(NULL) {}
+        TreeNode(int x, TreeNode *left, TreeNode *right) : data(x), left(left), right(right) {}
+    };
+
+*************************************************************/
+
+pair<int, int> predecessorSuccessor(TreeNode *root, int key)
+{
+    TreeNode* tmp=root;
+    int successor=-1;
+    int predecessor=-1;
+    while(tmp!=NULL) {
+        if(tmp->data>key) {
+            successor=tmp->data;
+            tmp=tmp->left;
+        }
+        else tmp=tmp->right;
+    }
+    tmp=root;
+    while(tmp!=NULL) {
+        if(tmp->data>=key)
+            tmp=tmp->left;
+        else {
+            predecessor=tmp->data;
+            tmp=tmp->right;
+        }
+    }
+    return {predecessor, successor};
+}
