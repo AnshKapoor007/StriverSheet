@@ -1,0 +1,59 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    stack<TreeNode*> next;
+    stack<TreeNode*> before;
+
+    void insertnextinstack(TreeNode* root) {
+        if(root==NULL) return;
+        while(root!=NULL) {
+            next.push(root);
+            root=root->left;
+        }
+    }
+
+    int findNext() {
+        TreeNode* nxt=next.top();
+        next.pop();
+        insertnextinstack(nxt->right);
+        return nxt->val;
+    }
+
+    void insertbeforeinstack(TreeNode* root) {
+        if(root==NULL) return;
+        while(root!=NULL) {
+            before.push(root);
+            root=root->right;
+        }
+    }
+
+    int findBefore() {
+        TreeNode* b4=before.top();
+        before.pop();
+        insertbeforeinstack(b4->left);
+        return b4->val;
+    }
+
+    bool findTarget(TreeNode* root, int k) {
+        insertnextinstack(root);
+        insertbeforeinstack(root);
+        int low=findNext();
+        int high=findBefore();
+        while(low<high) {
+            if(low+high==k) return true;
+            if(low+high>k) high=findBefore();
+            else low=findNext();
+        }
+        return false;
+    }
+};
