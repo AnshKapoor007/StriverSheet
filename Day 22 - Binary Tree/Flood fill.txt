@@ -1,0 +1,23 @@
+class Solution {
+public:
+    bool isValid(int i, int j, int n, int m) {
+        if(i<0 || j<0 || i>=n || j>=m) return false;
+        return true;
+    }
+
+    void floodFillHelp(vector<vector<int>>& image, int idxr, int idxc, int color, int prevColor, int n, int m) {
+        if(!isValid(idxr, idxc, n, m) || image[idxr][idxc]!=prevColor)
+            return;
+        image[idxr][idxc]=color;
+        floodFillHelp(image, idxr+1, idxc, color, prevColor, n, m);
+        floodFillHelp(image, idxr-1, idxc, color, prevColor, n, m);
+        floodFillHelp(image, idxr, idxc+1, color, prevColor, n, m);
+        floodFillHelp(image, idxr, idxc-1, color, prevColor, n, m);
+    }
+    
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
+        if(image[sr][sc]!=color)
+            floodFillHelp(image, sr, sc, color, image[sr][sc], image.size(), image[0].size());
+        return image;
+    }
+};
