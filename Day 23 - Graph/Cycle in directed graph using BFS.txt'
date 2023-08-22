@@ -1,0 +1,27 @@
+class Solution {
+public:
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        vector<int> indegree(numCourses, 0);
+        unordered_map<int, vector<int>> graph;
+        int visited=0;
+        queue<int> q;
+        for(int i=0; i<prerequisites.size(); i++) {
+            indegree[prerequisites[i][1]]++;
+            graph[prerequisites[i][0]].push_back(prerequisites[i][1]);
+        }
+        for(int i=0; i<numCourses; i++) {
+            if(indegree[i]==0) q.push(i);
+        }
+        while(!q.empty()) {
+            int curr=q.front();
+            visited++;
+            q.pop();
+            for(int neighbour: graph[curr]) {
+                indegree[neighbour]--;
+                if(indegree[neighbour]==0)
+                    q.push(neighbour);
+            }
+        }
+        return visited==numCourses;
+    }
+};

@@ -1,0 +1,30 @@
+#include<bits/stdc++.h>
+string cycleDetection(vector<vector<int>>& edges, int n, int m) {
+    queue<pair<int, int>> q;
+    vector<bool> visited(n+1, false);
+    unordered_map<int, vector<int>> graph;
+    for(auto edge: edges) {
+        graph[edge[0]].push_back(edge[1]);
+        graph[edge[1]].push_back(edge[0]);
+    }
+    for(int i=1; i<=n; i++) {
+        if(!visited[i]) {
+            q.push({i, -1});
+            visited[i]=true;
+            while(!q.empty()) {
+                int curr=q.front().first;
+                int par=q.front().second;
+                q.pop();
+                for(int neighbour: graph[curr]) {
+                    if(!visited[neighbour]) {
+                        visited[neighbour]=true;
+                        q.push({neighbour, curr});
+                    }
+                    else if(neighbour!=par)
+                        return "Yes";
+                }
+            }
+        }
+    }
+    return "No";
+}

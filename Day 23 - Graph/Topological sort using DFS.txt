@@ -1,0 +1,24 @@
+#include <bits/stdc++.h> 
+void dfs(int idx, vector<bool>& visited, stack<int>& st, unordered_map<int, vector<int>>& graph) {
+    visited[idx]=true;
+    for(int neighbour: graph[idx]) {
+        if(!visited[neighbour]) dfs(neighbour, visited, st, graph);
+    }
+    st.push(idx);
+}
+vector<int> topologicalSort(vector<vector<int>> &edges, int v, int e)  {
+    stack<int> st;
+    vector<int> ans;
+    vector<bool> visited(v, false);
+    unordered_map<int, vector<int>> graph;
+    for(auto edge: edges)
+        graph[edge[0]].push_back(edge[1]);
+    for(int i=0; i<v; i++) {
+        if(!visited[i]) dfs(i, visited, st, graph);
+    }
+    while(!st.empty()) {
+        ans.push_back(st.top());
+        st.pop();
+    }
+    return ans;
+}

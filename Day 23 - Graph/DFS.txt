@@ -1,0 +1,32 @@
+vector<vector<int>> depthFirstSearch(int V, int E, vector<vector<int>> &edges) {
+    unordered_map<int, vector<int>> graph;
+    unordered_map<int, bool> visited;
+    vector<vector<int>> ans;
+    for(auto edge: edges) {
+        graph[edge[0]].push_back(edge[1]);
+        graph[edge[1]].push_back(edge[0]);
+    }
+
+    for(int i=0; i<V; i++) {
+        stack<int> st;
+        vector<int> dfs;
+        if(!visited[i]) {
+            st.push(i);
+            visited[i]=true;
+        }
+        while(!st.empty()) {
+            int curr=st.top();
+            dfs.push_back(curr);
+            st.pop();
+            for(int neighbour: graph[curr]) {
+                if(!visited[neighbour]) {
+                    st.push(neighbour);
+                    visited[neighbour]=true;
+                }
+            }
+        }
+        if(dfs.size()!=0)
+            ans.push_back(dfs);
+    }
+    return ans;
+}

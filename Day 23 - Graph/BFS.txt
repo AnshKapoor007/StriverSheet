@@ -1,0 +1,19 @@
+vector<int> bfsTraversal(int n, vector<vector<int>> &adj){
+    queue<int> q;
+    vector<bool> visited(n, false);
+    vector<int> ans;
+    q.push(0);
+    visited[0]=true;
+    while(!q.empty()) {
+        int curr=q.front();
+        ans.push_back(curr);
+        q.pop();
+        for(int neighbour: adj[curr]) {
+            if(!visited[neighbour]) {
+                q.push(neighbour);
+                visited[neighbour]=true;
+            }
+        }
+    }
+    return ans;
+}

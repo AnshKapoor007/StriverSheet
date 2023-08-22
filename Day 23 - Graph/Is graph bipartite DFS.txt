@@ -1,0 +1,20 @@
+class Solution {
+public:
+    void dfs(int idx, int col, bool& ans, vector<vector<int>>& graph, vector<int>& color) {
+        color[idx]=col;
+        for(int neighbour: graph[idx]) {
+            if(color[neighbour]==-1)
+                dfs(neighbour, 1-col, ans, graph, color);
+            if(color[neighbour]==color[idx]) ans=false;
+        }
+    }
+    bool isBipartite(vector<vector<int>>& graph) {
+        vector<int> color(graph.size(), -1);
+        bool ans=true;
+        for(int i=0; i<graph.size(); i++) {
+            if(color[i]==-1)
+                dfs(i, 0, ans, graph, color);
+        }
+        return ans;
+    }
+};
