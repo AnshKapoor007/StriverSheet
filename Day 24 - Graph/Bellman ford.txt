@@ -1,0 +1,12 @@
+vector<int> bellmonFord(int n, int m, int src, vector<vector<int>>& edges) {
+    vector<int> dist(n+1, 1e8);
+    dist[src]=0;
+    for(int i=1; i<n; i++) {
+        for(auto edge: edges) {
+            if(dist[edge[0]]+edge[2]<dist[edge[1]]) {
+                dist[edge[1]]=dist[edge[0]]+edge[2];
+            }
+        }
+    }
+    return dist;
+}

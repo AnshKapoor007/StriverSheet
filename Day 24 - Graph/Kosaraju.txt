@@ -1,0 +1,46 @@
+#include<bits/stdc++.h>
+void dfs(int idx, stack<int>& st, vector<bool>& visited, unordered_map<int, vector<int>> graph) {
+    visited[idx]=true;
+    for(int nxt: graph[idx]) {
+        if(!visited[nxt]) dfs(nxt, st, visited, graph);
+    }
+    st.push(idx);
+}
+
+void revDfs(int idx, unordered_map<int, vector<int>> graph, vector<bool>& visited, vector<int>& ans) {
+    visited[idx]=true;
+    ans.push_back(idx);
+    for(int nxt: graph[idx]) {
+        if(!visited[nxt]) revDfs(nxt, graph, visited, ans);
+    }
+}
+
+vector<vector<int>> stronglyConnectedComponents(int n, vector<vector<int>>& edges) {
+    stack<int> st;
+    vector<bool> visited(n, false);
+    unordered_map<int, vector<int>> graph;
+    unordered_map<int, vector<int>> transpose;
+    vector<vector<int>> ans;
+    
+    for(auto edge: edges) graph[edge[0]].push_back(edge[1]);
+    for(int i=0; i<n; i++) {
+        if(!visited[i]) dfs(i, st, visited, graph);
+    }
+
+    for(int i=0; i<n; i++) {
+        visited[i]=false;
+        for(int nxt: graph[i])
+            transpose[nxt].push_back(i);
+    }
+
+    while(!st.empty()) {
+        int node=st.top();
+        vector<int> component;
+        st.pop();
+        if(!visited[node]) {
+            revDfs(node, transpose, visited, component);
+            ans.push_back(component);
+        }
+    }
+    return ans;
+}

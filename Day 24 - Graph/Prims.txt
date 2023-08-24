@@ -1,0 +1,27 @@
+#include <bits/stdc++.h> 
+vector<pair<pair<int, int>, int>> calculatePrimsMST(int n, int m, vector<pair<pair<int, int>, int>>& g) {
+    priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>>> pq;
+    vector<pair<pair<int, int>, int>> ans;
+    unordered_map<int, vector<pair<int, int>>> graph;
+    vector<bool> visited(n+1, false);
+    for(auto edge: g) {
+        graph[edge.first.first].push_back({edge.first.second, edge.second});
+        graph[edge.first.second].push_back({edge.first.first, edge.second});
+    }
+    pq.push({0, 1, -1});
+    while(!pq.empty()) {
+        int wt=pq.top()[0];
+        int curr=pq.top()[1];
+        int par=pq.top()[2];
+        pq.pop();
+        if(visited[curr]) continue;
+        visited[curr]=true;
+        if(par!=-1)
+            ans.push_back({{par, curr}, wt});
+        for(auto neighbour: graph[curr]) {
+            if(!visited[neighbour.first])
+                pq.push({neighbour.second, neighbour.first, curr});
+        }
+    }
+    return ans;
+}

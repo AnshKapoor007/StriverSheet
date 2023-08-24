@@ -1,0 +1,27 @@
+#include <bits/stdc++.h> 
+vector<int> dijkstra(vector<vector<int>>& vec, int vertices, int edges, int source) {
+    vector<int> dist(vertices, INT_MAX);
+    vector<int> parent(vertices);
+    unordered_map<int, vector<pair<int, int>>> graph;
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+    for(auto v: vec) {
+        graph[v[0]].push_back({v[1], v[2]});
+        graph[v[1]].push_back({v[0], v[2]});
+    }
+    for(int i=0; i<vertices; i++) parent[i]=i;
+    pq.push({0, 0});
+    dist[0]=0;
+    while(!pq.empty()) {
+        int curr=pq.top().second;
+        int currDist=pq.top().first;
+        pq.pop();
+        for(auto neighbour: graph[curr]) {
+            if(dist[neighbour.first]>currDist+neighbour.second) {
+                dist[neighbour.first]=currDist+neighbour.second;
+                parent[neighbour.first]=curr;
+                pq.push({dist[neighbour.first], neighbour.first});
+            }
+        }
+    }
+    return dist;
+}

@@ -1,0 +1,20 @@
+int floydWarshall(int n, int m, int src, int dest, vector<vector<int>>& edges) {
+    vector<vector<int>> adjencyMatrix(n+1, vector<int>(n+1, 1e9));
+    for(int i=1; i<=n; i++) {
+        for(int j=1; j<=n; j++) {
+            if(i==j) adjencyMatrix[i][j]=0;
+        }
+    }
+    for(auto edge: edges) {
+        adjencyMatrix[edge[0]][edge[1]]=edge[2];
+    }
+    for(int via=1; via<=n; via++) {
+        for(int i=1; i<=n; i++) {
+            for(int j=1; j<=n; j++) {
+                if(adjencyMatrix[i][via]==1e9 || adjencyMatrix[via][j]==1e9)  continue;
+                adjencyMatrix[i][j]=min(adjencyMatrix[i][j], adjencyMatrix[i][via]+adjencyMatrix[via][j]);
+            }
+        }
+    }
+    return adjencyMatrix[src][dest];
+}
