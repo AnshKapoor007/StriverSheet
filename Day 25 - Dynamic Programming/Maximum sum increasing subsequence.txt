@@ -1,0 +1,13 @@
+#include <bits/stdc++.h> 
+int maxIncreasingDumbbellsSumHelp(int idx, int parent, vector<int>& rack, int n, vector<vector<int>>& dp) {
+	if(idx==n) return 0;
+	if(dp[idx][parent+1]!=-1) return dp[idx][parent+1];
+	int weight=maxIncreasingDumbbellsSumHelp(idx+1, parent, rack, n, dp);
+	if(parent==-1 || rack[parent]<rack[idx])
+		weight=max(weight, rack[idx]+maxIncreasingDumbbellsSumHelp(idx+1, idx, rack, n, dp));
+	return dp[idx][parent+1]=weight;
+}
+int maxIncreasingDumbbellsSum(vector<int>& rack, int n) {
+	vector<vector<int>> dp(n, vector<int>(n, -1));
+	return maxIncreasingDumbbellsSumHelp(0, -1, rack, n, dp);
+}

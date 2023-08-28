@@ -1,0 +1,17 @@
+#include<bits/stdc++.h>
+int maxProfitHelp(vector<int>& values, vector<int>& weights, int idx, int w, vector<vector<int>>& dp) {
+	if(idx==0) {
+		if(weights[0]<=w) return values[0];
+		else return 0;
+	}
+	if(dp[idx][w]!=-1) return dp[idx][w];
+	int take=INT_MIN;
+	int not_take=maxProfitHelp(values, weights, idx-1, w, dp);
+	if(weights[idx]<=w)
+		take=values[idx]+maxProfitHelp(values, weights, idx-1, w-weights[idx], dp);
+	return dp[idx][w]=max(take, not_take);
+}
+int maxProfit(vector<int>& values, vector<int>& weights, int n, int w) {
+	vector<vector<int>> dp(n, vector<int>(w+1, -1));
+	return maxProfitHelp(values, weights, n-1, w, dp);
+}
