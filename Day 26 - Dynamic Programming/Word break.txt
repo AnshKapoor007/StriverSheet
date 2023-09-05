@@ -1,0 +1,20 @@
+class Solution {
+public:
+    unordered_map<int, bool> memo;
+    bool wordBreakHelp(int idx, string s, int n, unordered_map<string, bool>& dict) {
+        if(idx==n) return true;
+        if(memo.find(idx)!=memo.end()) return memo[idx];
+        for(int i=idx; i<n; i++) {
+            string word=s.substr(idx, i-idx+1);
+            if(dict.find(word)!=dict.end() && wordBreakHelp(i+1, s, n, dict)) {
+                return memo[idx]=true;
+            }
+        }
+        return memo[idx]=false;
+    }
+    bool wordBreak(string s, vector<string>& wordDict) {
+        unordered_map<string, bool> dict;
+        for(auto word: wordDict) dict[word]=true;
+        return wordBreakHelp(0, s, s.size(), dict);
+    }
+};

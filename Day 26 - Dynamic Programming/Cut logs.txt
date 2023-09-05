@@ -1,0 +1,25 @@
+#include<bits/stdc++.h>
+int cutLogsHelp(int k, int n, vector<vector<int>>& dp) {
+    if(n<=0 || k<=0) return 0;
+    if(k==1) return n;
+    if(n==1) return 1;
+    if(dp[k][n]!=-1) return dp[k][n];
+
+    int mini=INT_MAX;
+    int low=1;
+    int high=n;
+    while(low<=high) {
+        int mid=(low+high)/2;
+        int broken=cutLogsHelp(k-1, mid-1, dp);
+        int notBroken=cutLogsHelp(k, n-mid, dp);
+        int result=max(notBroken, broken);
+        mini=min(result+1, mini);
+        if(broken<notBroken) low=mid+1;
+        else high=mid-1;
+     }
+    return dp[k][n]=mini;
+}
+int cutLogs(int k, int n) {
+    vector<vector<int>> dp(k+1, vector<int>(n+1, -1));
+    return cutLogsHelp(k, n, dp);
+}

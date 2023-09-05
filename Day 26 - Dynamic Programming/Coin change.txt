@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int coinChangeHelp(vector<int>& coins, int amount, int n, vector<int>& dp) {
+        if(amount==0) return 0;
+        if(amount<0) return INT_MAX;
+        if(dp[amount]!=-1) return dp[amount];
+        int steps=INT_MAX;
+        for(int i=0; i<n; i++) {
+            int stepReq=coinChangeHelp(coins, amount-coins[i], n, dp);
+            if(stepReq!=INT_MAX)
+                steps=min(steps, stepReq+1);
+        }
+        return dp[amount]=steps;
+    }
+    int coinChange(vector<int>& coins, int amount) {
+        vector<int> dp(amount+1, -1);
+        int ans=coinChangeHelp(coins, amount, coins.size(), dp);
+        return ans==INT_MAX?-1:ans;
+    }
+};

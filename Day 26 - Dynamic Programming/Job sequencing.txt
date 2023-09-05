@@ -1,0 +1,25 @@
+#include <bits/stdc++.h> 
+bool comparision(vector<int> a, vector<int> b) {
+    return (a[2]>b[2]);
+}
+vector<int> jobScheduling(vector<vector<int>> &jobs)
+{
+    int n=jobs.size(), maxProfit=0, job=0;
+    sort(jobs.begin(), jobs.end(), comparision);
+    int maxi=jobs[0][1];
+    for(auto job: jobs) maxi=max(maxi, job[1]);
+    vector<int> jobDone(maxi+1, -1);
+    for(int i=0; i<n; i++) {
+        auto currJob=jobs[i];
+        int maxTimeReq=currJob[1];
+        while(maxTimeReq>0 && jobDone[maxTimeReq]!=-1) {
+            maxTimeReq--;
+        }
+        if(maxTimeReq>0) {
+            job++;
+            jobDone[maxTimeReq]=i+1;
+            maxProfit+=currJob[2];
+        }
+    }
+    return {job, maxProfit};
+}
