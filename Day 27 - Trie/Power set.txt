@@ -1,0 +1,15 @@
+#include <bits/stdc++.h> 
+vector<vector<int>> pwset(vector<int> v) {
+    int limit=1<<v.size();
+    int n=v.size();
+    vector<vector<int>> ans;
+    for(int num=0; num<limit; num++) {
+        vector<int> curr;
+        for(int i=0; i<n; i++) {
+            if(num & (1<<i))
+                curr.push_back(v[i]);
+        }
+        ans.push_back(curr);
+    }
+    return ans;
+}

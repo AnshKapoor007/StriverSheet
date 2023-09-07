@@ -1,0 +1,75 @@
+struct Node {
+    Node* links[26];
+
+    bool containsKey(char ch) {
+        return (links[ch-'a']!=NULL);
+    }
+
+    Node* get(char ch) {
+        return links[ch-'a'];
+    }
+
+    void put(char ch, Node* node) {
+        links[ch-'a']=node;
+    }
+    
+    bool hasOneChild() {
+        int childCount=0;
+        for(int i=0; i<26; i++) {
+            if(links[i]!=NULL) {
+                childCount++;
+                if(childCount>1) {
+                    return false;
+                }
+            }
+        }
+        return childCount==1;
+    }
+
+    char getOnlyChild() {
+        for(int i=0; i<26; i++) {
+            if(links[i]!=NULL) {
+                return 'a'+i;
+            }
+        }
+        return '-';
+    }
+};
+
+class Trie {
+private:
+    Node* root;
+public:
+    Trie() {
+        root=new Node();
+    }
+
+    void insert(string& word) {
+        Node* node=root;
+        for(char ch: word) {
+            if(!node->containsKey(ch))
+                node->put(ch, new Node());
+            node=node->get(ch);
+        }
+    }
+    
+    string searchCommon() {
+        Node* node=root;
+        string common="";
+        while(node!=NULL && node->hasOneChild()) {
+            char ch=node->getOnlyChild();
+            common+=ch;
+            node=node->get(ch);
+        }
+        return common;
+    }
+};
+
+
+string longestCommonPrefix(vector<string>& arr, int n) {
+    Trie trie;
+    for(string word: arr)
+        trie.insert(word);
+    string common=trie.searchCommon();
+    return common;
+}

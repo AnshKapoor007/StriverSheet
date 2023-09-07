@@ -1,0 +1,33 @@
+struct Node {
+    Node* links[26];
+    
+    bool checkChar(char ch) {
+        return (links[ch-'a']!=NULL);
+    }
+
+    Node* get(char ch) {
+        return links[ch-'a'];
+    }
+
+    void put(char ch, Node* node) {
+        links[ch-'a']=node;
+    }
+};
+
+int countDistinctSubstrings(string& s) {
+    int cnt=0;
+    int n=s.size();
+    Node* root=new Node();
+
+    for(int i=0; i<n; i++) {
+        Node* node=root;    
+        for(int j=i; j<n; j++) {
+            if(!(node->checkChar(s[j]))) {
+                cnt++;
+                node->put(s[j], new Node());
+            }
+            node=node->get(s[j]);
+        }
+    }
+    return cnt+1;
+}
